@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PDF Tools - NayabTools</title>
+
+<style>
+body {
+  font-family: Arial;
+  background: #f4f4f4;
+  text-align: center;
+}
+<div style="background:#1e293b;padding:10px;text-align:center;">
+  <a href="index.html" style="color:white;margin:10px;text-decoration:none;">🏠 Home</a>
+  <a href="compressor.html" style="color:white;margin:10px;text-decoration:none;">🖼 Image</a>
+  <a href="converter.html" style="color:white;margin:10px;text-decoration:none;">💱 Currency</a>
+  <a href="cv.html" style="color:white;margin:10px;text-decoration:none;">📄 CV</a>
+  <a href="pdf.html" style="color:white;margin:10px;text-decoration:none;">📁 PDF</a>
+</div>
+.container {
+  background: white;
+  margin: 20px auto;
+  padding: 20px;
+  width: 90%;
+  max-width: 500px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px #ccc;
+}
+
+button {
+  padding: 10px;
+  background: #e91e63;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+</style>
+</head>
+
+<body>
+
+<a href="index.html">⬅ Back Home</a>
+
+<div class="container">
+
+<h2>Image → PDF Converter</h2>
+
+<input type="file" id="imageInput" accept="image/*"><br><br>
+
+<button onclick="convertToPDF()">Convert to PDF</button>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<script>
+function convertToPDF() {
+  const file = document.getElementById("imageInput").files[0];
+  if (!file) return alert("Select image first");
+
+  const reader = new FileReader();
+
+  reader.onload = function(e) {
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF();
+
+    pdf.addImage(e.target.result, "JPEG", 10, 10, 180, 160);
+    pdf.save("NayabTools.pdf");
+  };
+
+  reader.readAsDataURL(file);
+}
+</script>
+
+</body>
+</html>

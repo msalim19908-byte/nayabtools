@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Professional CV Builder</title>
+
+<style>
+body {
+  font-family: Arial;
+  background: #f4f4f4;
+  text-align: center;
+}
+<div style="background:#1e293b;padding:10px;text-align:center;">
+  <a href="index.html" style="color:white;margin:10px;text-decoration:none;">🏠 Home</a>
+  <a href="compressor.html" style="color:white;margin:10px;text-decoration:none;">🖼 Image</a>
+  <a href="converter.html" style="color:white;margin:10px;text-decoration:none;">💱 Currency</a>
+  <a href="cv.html" style="color:white;margin:10px;text-decoration:none;">📄 CV</a>
+  <a href="pdf.html" style="color:white;margin:10px;text-decoration:none;">📁 PDF</a>
+</div>
+
+.container {
+  background: white;
+  margin: 20px auto;
+  padding: 20px;
+  width: 90%;
+  max-width: 500px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px #ccc;
+}
+
+input, textarea {
+  width: 90%;
+  padding: 8px;
+  margin: 5px;
+}
+
+button {
+  padding: 10px;
+  background: purple;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+
+#cvContent {
+  text-align: left;
+  margin-top: 20px;
+}
+</style>
+</head>
+
+<body>
+
+<a href="index.html">⬅ Back</a>
+
+<div class="container">
+<h2>Professional CV Builder</h2>
+
+<input type="text" id="fname" placeholder="First Name"><br>
+<input type="text" id="lname" placeholder="Last Name"><br>
+<input type="file" id="photo"><br>
+
+<textarea id="education" placeholder="Education"></textarea>
+<textarea id="experience" placeholder="Experience"></textarea>
+<textarea id="skills" placeholder="Skills"></textarea>
+
+<br>
+<button onclick="generateCV()">Generate CV</button>
+
+<div id="cv"></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+
+<script>
+function generateCV() {
+  let fname = document.getElementById("fname").value;
+  let lname = document.getElementById("lname").value;
+  let education = document.getElementById("education").value;
+  let experience = document.getElementById("experience").value;
+  let skills = document.getElementById("skills").value;
+  let photo = document.getElementById("photo").files[0];
+
+  let reader = new FileReader();
+
+  reader.onload = function(e) {
+    let image = photo ? "<img src='" + e.target.result + "' width='100'>" : "";
+
+    document.getElementById("cv").innerHTML =
+      "<div id='cvContent' style='border:1px solid black;padding:15px'>" +
+      image +
+      "<h2>" + fname + " " + lname + "</h2>" +
+      "<h3>Education</h3><p>" + education + "</p>" +
+      "<h3>Experience</h3><p>" + experience + "</p>" +
+      "<h3>Skills</h3><p>" + skills + "</p>" +
+      "</div>" +
+      "<br><button onclick='downloadPDF()'>Download PDF</button>";
+  };
+
+  if (photo) {
+    reader.readAsDataURL(photo);
+  } else {
+    reader.onload({target:{result:""}});
+  }
+}
+
+function downloadPDF() {
+  let element = document.getElementById("cvContent");
+  html2pdf().from(element).save();
+}
+</script>
+
+</body>
+</html>

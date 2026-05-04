@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Currency Converter</title>
+
+<style>
+body {
+  font-family: Arial;
+  text-align:center;
+  background:#f4f4f4;
+}
+
+.container {
+  background:white;
+  margin:30px auto;
+  padding:20px;
+  width:90%;
+  max-width:400px;
+  border-radius:10px;
+  box-shadow:0 0 10px #ccc;
+}
+
+button {
+  padding:10px;
+  background:blue;
+  color:white;
+  border:none;
+  border-radius:5px;
+}
+</style>
+</head>
+
+<body>
+  <div style="background:#1e293b;padding:10px;text-align:center;">
+  <a href="index.html" style="color:white;margin:10px;text-decoration:none;">🏠 Home</a>
+  <a href="compressor.html" style="color:white;margin:10px;text-decoration:none;">🖼 Image</a>
+  <a href="converter.html" style="color:white;margin:10px;text-decoration:none;">💱 Currency</a>
+  <a href="cv.html" style="color:white;margin:10px;text-decoration:none;">📄 CV</a>
+  <a href="pdf.html" style="color:white;margin:10px;text-decoration:none;">📁 PDF</a>
+</div>
+
+<a href="index.html">⬅ Back</a>
+
+<div class="container">
+<h2>Live Currency Converter (PKR, AED, SAR, USD)</h2>
+
+<input type="number" id="amount" placeholder="Enter Amount"><br><br>
+
+<select id="from">
+<option value="USD">USD - US Dollar</option>
+<option value="PKR">PKR - Pakistani Rupee</option>
+<option value="EUR">EUR - Euro</option>
+<option value="AED">AED - UAE Dirham</option>
+<option value="OMR">OMR - Omani Rial</option>
+<option value="INR">INR - Indian Rupee</option>
+<option value="CNY">CNY - Chinese Yuan</option>
+<option value="KWD">KWD - Kuwaiti Dinar</option>
+<option value="SAR">SAR - Saudi Riyal</option>
+<option value="QAR">QAR - Qatari Riyal</option>
+</select>
+
+<select id="to">
+<option value="PKR">PKR - Pakistani Rupee</option>
+<option value="USD">USD - US Dollar</option>
+<option value="EUR">EUR - Euro</option>
+<option value="AED">AED - UAE Dirham</option>
+<option value="OMR">OMR - Omani Rial</option>
+<option value="INR">INR - Indian Rupee</option>
+<option value="CNY">CNY - Chinese Yuan</option>
+<option value="KWD">KWD - Kuwaiti Dinar</option>
+<option value="SAR">SAR - Saudi Riyal</option>
+<option value="QAR">QAR - Qatari Riyal</option>
+</select>
+
+<br><br>
+<button onclick="convert()">Convert</button>
+<h4>Popular Conversions</h4>
+
+<div style="margin-top:15px;">
+
+<button style="margin:5px;padding:10px;background:#009688;color:white;border:none;border-radius:5px;" onclick="quickConvert(1,'AED','PKR')">🇦🇪 AED → 🇵🇰 PKR</button>
+
+<button style="margin:5px;padding:10px;background:#3F51B5;color:white;border:none;border-radius:5px;" onclick="quickConvert(1,'SAR','PKR')">🇸🇦 SAR → 🇵🇰 PKR</button>
+
+<button style="margin:5px;padding:10px;background:#4CAF50;color:white;border:none;border-radius:5px;" onclick="quickConvert(1,'USD','PKR')">🇺🇸 USD → 🇵🇰 PKR</button>
+
+<button style="margin:5px;padding:10px;background:#FF9800;color:white;border:none;border-radius:5px;" onclick="quickConvert(1,'OMR','PKR')">🇴🇲 OMR → 🇵🇰 PKR</button>
+
+<button style="margin:5px;padding:10px;background:#9C27B0;color:white;border:none;border-radius:5px;" onclick="quickConvert(1,'KWD','PKR')">🇰🇼 KWD → 🇵🇰 PKR</button>
+
+</div>
+<button onclick="quickConvert(1,'SAR','PKR')">1 SAR → PKR</button>
+<button onclick="quickConvert(1,'USD','PKR')">1 USD → PKR</button>
+<button onclick="quickConvert(1,'OMR','PKR')">1 OMR → PKR</button>
+<button onclick="quickConvert(1,'KWD','PKR')">1 KWD → PKR</button>
+<h3 id="result"></h3>
+</div>
+
+<script>
+function convert() {
+  function quickConvert(amount, from, to) {
+  document.getElementById("amount").value = amount;
+  document.getElementById("from").value = from;
+  document.getElementById("to").value = to;
+  convert();
+}
+  let amount = document.getElementById("amount").value;
+  let from = document.getElementById("from").value;
+  let to = document.getElementById("to").value;
+
+  if (!amount) return alert("Enter amount");
+
+  fetch(`https://api.exchangerate-api.com/v4/latest/${from}`)
+    .then(res => res.json())
+    .then(data => {
+      let rate = data.rates[to];
+      let result = amount * rate;
+
+      document.getElementById("result").innerText =
+        amount + " " + from + " = " + result.toFixed(2) + " " + to;
+    });
+}
+</script>
+
+</body>
+</html>

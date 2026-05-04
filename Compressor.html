@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Image Compressor</title>
+
+<style>
+body {
+  font-family: Arial;
+  text-align:center;
+  background:#f4f4f4;
+}
+<div style="background:#1e293b;padding:10px;text-align:center;">
+  <a href="index.html" style="color:white;margin:10px;text-decoration:none;">🏠 Home</a>
+  <a href="compressor.html" style="color:white;margin:10px;text-decoration:none;">🖼 Image</a>
+  <a href="converter.html" style="color:white;margin:10px;text-decoration:none;">💱 Currency</a>
+  <a href="cv.html" style="color:white;margin:10px;text-decoration:none;">📄 CV</a>
+  <a href="pdf.html" style="color:white;margin:10px;text-decoration:none;">📁 PDF</a>
+</div>
+
+.container {
+  background:white;
+  margin:30px auto;
+  padding:20px;
+  width:90%;
+  max-width:400px;
+  border-radius:10px;
+  box-shadow:0 0 10px #ccc;
+}
+
+button {
+  padding:10px;
+  background:green;
+  color:white;
+  border:none;
+  border-radius:5px;
+}
+</style>
+</head>
+
+<body>
+
+<a href="index.html">⬅ Back</a>
+
+<div class="container">
+<h2>Image Compressor</h2>
+
+<input type="file" id="upload"><br><br>
+<button onclick="compressImage()">Compress</button>
+<a id="download" style="display:none;">Download Image</a>
+</div>
+
+<script>
+function compressImage() {
+  const file = document.getElementById("upload").files[0];
+  if (!file) return alert("Upload image");
+
+  const reader = new FileReader();
+  reader.readAsDataURL(file);
+
+  reader.onload = function(e) {
+    const img = new Image();
+    img.src = e.target.result;
+
+    img.onload = function() {
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
+
+      canvas.width = img.width * 0.5;
+      canvas.height = img.height * 0.5;
+
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+      canvas.toBlob(function(blob) {
+        const url = URL.createObjectURL(blob);
+        const link = document.getElementById("download");
+
+        link.href = url;
+        link.download = "compressed.jpg";
+        link.style.display = "block";
+        link.innerText = "Download Image";
+      }, "image/jpeg", 0.7);
+    };
+  };
+}
+</script>
+
+</body>
+</html>
